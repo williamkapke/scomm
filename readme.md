@@ -1,3 +1,4 @@
+
 # scomm
 (**S**torage **Comm**unicator)
 A cross browser window/tab messaging framework.
@@ -18,32 +19,36 @@ The default is to use the domain and protocol of the page. It is recommended tha
 
 ---
 
-###scomm.hash
+##scomm.hash
 The unique id for the instance. Every window/tab will have one.
 
 _
 _
 
-###scomm.debug
+##scomm.debug
 Setting this property to `true` sends debug information to the browser’s console.
 
-####Optional
+###Optional
+
 >By default, debug messages are sent to console.log. Set this property to a `function` to override the default debugging behavior.
 
 _
 _
 
-###scomm.add(callback(cmd, data, sender))
+##scomm.add(callback(cmd, data, sender))
 Adds a callback to send messages to.
 
-####Parameters
+###Parameters
+
 >`callback` : Function
 >A callback to execute when a message is received.
 
-####Return value:
+###Return value:
+
 >none
 
-####Example
+###Example
+
 ```javascript
 scomm.add(function (cmd, data, sender) {
 	if(cmd=="play"){
@@ -55,24 +60,25 @@ scomm.add(function (cmd, data, sender) {
 _
 _
 
-###scomm.remove(callback)
+##scomm.remove(callback)
 Stops a callback from being notified.
 
 _
 _
 
-###scomm.ready(callback)
+##scomm.ready(callback)
 Adds a callback to be called after scomm is ready.
 
 -
 -
 
-###scomm.send(cmd, data[, to, fail, ok])
+##scomm.send(cmd, data[, to, fail, ok])
 Sends a command and data to one or many recipients.
 
 The iframe must be finished loading before communication can start. When "ready", this function is added to the scomm object.
 
-####Parameters
+###Parameters
+
 >`cmd` : String
 >Any string you want. It should probably have something to do with the data.
 >
@@ -89,10 +95,12 @@ The iframe must be finished loading before communication can start. When "ready"
 >`ok` : Function _(optional)_
 >A callback to execute when a message is successfully acknowledged.
 
-####Return value:
+###Return value:
+
 >none
 
-####Example
+###Example
+
 See [example.html](https://github.com/williamwicks/scomm/blob/master/example.html)
 
 
