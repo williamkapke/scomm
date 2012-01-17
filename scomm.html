@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<script>
+(function(ls, hash, ie, keyCheck, sendsStorageEventData, origin, i){
+    if(window==window.top) return;
+
+    function evnt(obj, evt, cb){
+        if(obj.addEventListener)
+            obj.addEventListener(evt, cb, false);
+        else obj.attachEvent("on"+evt,cb);
+    }
+    evnt(window, "message", function(e){
+        var key = keyCheck.exec(e.data);
+        if(!key) return;
+        key = sendsStorageEventData?key[0]:ls.length;
+
+        try{
+            ls[key] = e.data;
+        }
+        catch(e){
+            parent.postMessage('scomm_{"cmd":"clear"}', "*");
+            ls.clear();
+            i = -1;
+            ls[key] = e.data;
+        }
+    });
+
+    function lookForChanges(){
+        if(!i) i=ls.length-1;
+        while(i<ls.length){
+            var item = ls.getItem(i++);
+            if(item){
+                window.console && console.log("processing:", item);
+                parent.postMessage(item, "*");
+            }
+        }
+        setTimeout(lookForChanges, 500);
+    }
+    if(ie && !sendsStorageEventData)//IE8
+        setTimeout(lookForChanges, 500);
+    else
+        evnt(window, 'storage', function(e){
+            if(keyCheck.test(e.key) && e.newValue)
+                parent.postMessage(e.newValue, "*");
+        });
+
+    parent.postMessage(hash, "*");
+
+    evnt(window, 'beforeunload',function(e){
+        ls.removeItem(hash);
+        var key = sendsStorageEventData?"scomm*":ls.length;
+        ls[key] = 'scomm*'+JSON.stringify({"cmd":"_remove","sender":hash,"ts":+new Date,"to":"scomm*"});
+    })
+})(
+localStorage,
+location.hash.substr(1),
+!+"\v1",
+/^scomm\d{13}|scomm\*|scomm_/,
+!!window.addEventListener,
+"http://"+location.host
+);
+</script>
