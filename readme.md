@@ -12,13 +12,15 @@ A cross browser window/tab messaging framework.
 I created this as a replacement for the slow and unreliable LocalConnection provided by Flash.
 Under the hood it creates an iframe on the page and uses the LocalStorage and PostMessage apis to send messages across.
 
-**Scomm will pollute the localStorage of the domain the iframe is hosted on!!** __(This by design)__
+**Scomm will pollute the localStorage of the domain the iframe is hosted on!!** _(This by design)_
+
 The default is to use the domain and protocol of the page. It is recommended that you change the origin to a special domain. (eg. scomm.example.com). If you need to communicate with secure AND insecure pages, simply hardcode the origin to point to https.
 
 ---
 
 ###scomm.hash
 The unique id for the instance. Every window/tab will have one.
+
 _
 _
 
@@ -27,8 +29,10 @@ Setting this property to `true` sends debug information to the browser’s conso
 
 ####Optional
 >By default, debug messages are sent to console.log. Set this property to a `function` to override the default debugging behavior.
+
 _
 _
+
 ###scomm.add(callback(cmd, data, sender))
 Adds a callback to send messages to.
 
@@ -47,18 +51,23 @@ scomm.add(function (cmd, data, sender) {
 	}
 });
 ```
+
 _
 _
+
 ###scomm.remove(callback)
 Stops a callback from being notified.
+
 _
 _
+
 ###scomm.ready(callback)
 Adds a callback to be called after scomm is ready.
+
 -
 -
-###scomm.send(cmd, data)
-###scomm.send(cmd, data, to, fail, ok)
+
+###scomm.send(cmd, data[, to, fail, ok])
 Sends a command and data to one or many recipients.
 
 The iframe must be finished loading before communication can start. When "ready", this function is added to the scomm object.
@@ -67,24 +76,24 @@ The iframe must be finished loading before communication can start. When "ready"
 >`cmd` : String
 >Any string you want. It should probably have something to do with the data.
 >
->`data` : Object __(optional)__
+>`data` : Object _(optional)_
 >Anything you want to send. Although you should know that it will be JSON.stringify-ed so it has those limits.
 >
 >**Sending direct messages to other clients:**
 >`to` : String
 >The hash of a recipient. There is no built-in functionality for obtaining hashes from other clients.
 >
->`fail` : Function __(optional)__
+>`fail` : Function _(optional)_
 >A callback to execute when acknowledgement is not received within 2 seconds.
 >
->`ok` : Function __(optional)__
+>`ok` : Function _(optional)_
 >A callback to execute when a message is successfully acknowledged.
 
 ####Return value:
 >none
 
 ####Example
-See example.html
+See [example.html](https://github.com/williamwicks/scomm/blob/master/example.html)
 
 
 License
